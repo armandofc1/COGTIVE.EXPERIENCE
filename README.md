@@ -28,11 +28,11 @@ O programa deverá calcular período total de duração das manutenções (soma 
 ### 📷 Screenshots
 
 ![Funcionalidades](screens/funcionalidades.png)
-![Arquetetura](screens/solution.png)
+![Arquitetura](screens/solution.png)
 
 ---
 
-## 🛠️ Tecnologias e Arquetetura
+## 🛠️ Tecnologias e Arquitetura
 
 - C#;
 - .NET ;

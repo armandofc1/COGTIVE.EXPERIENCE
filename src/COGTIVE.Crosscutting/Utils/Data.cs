@@ -5,11 +5,10 @@ using COGTIVE.Domain.Apontamentos;
 
 namespace COGTIVE.Crosscutting.Utils
 {
-    public static class Data
+    public class Data
     {
-        public static ApontamentoRepository Load()
+        public static ApontamentoRepository Load(ApontamentoRepository repository)
         {
-            ApontamentoRepository repository = new ApontamentoRepository();
             try
             {
                 string sfileName = Data.UrlFileData();
@@ -46,45 +45,55 @@ namespace COGTIVE.Crosscutting.Utils
             {
                 if(arrData[4] == "1" || arrData[4] == "2")
                 {
-                    int idApontamento = Convert.ToInt32(arrData[0]);
-                    DateTime dataInicio = Convert.ToDateTime(arrData[1]);
-                    DateTime dataFim = Convert.ToDateTime(arrData[2]);
-                    string numeroLote = arrData[3];
-                    int idEvento = Convert.ToInt32(arrData[4]);
-                    TipoEvento tipoEvento = TipoEvento.Producao;
-                    string descricao = "Produção";
-                    int quantidade = Convert.ToInt32(arrData[5]);
-
-                    IApontamento producao = new Producao(idApontamento: idApontamento,
-                                                     dataInicio: dataInicio,
-                                                     dataFim: dataFim,
-                                                     idEvento: idEvento,
-                                                     tipoEvento: tipoEvento,
-                                                     descricao: descricao,
-                                                     numeroLote: numeroLote,
-                                                     quantidade: quantidade);
-                    return producao;
+                    return CreateProducao(arrData);
                 }
 
                 if (arrData[4] == "19")
                 {
-                    int idApontamento = Convert.ToInt32(arrData[0]);
-                    DateTime dataInicio = Convert.ToDateTime(arrData[1]);
-                    DateTime dataFim = dataFim = Convert.ToDateTime(arrData[2]);
-                    int idEvento = Convert.ToInt32(arrData[4]);
-                    TipoEvento tipoEvento = TipoEvento.Manutencao;
-                    string descricao = "Manutenção";
-
-                    IApontamento manutencao = new Manutencao(idApontamento: idApontamento,
-                                                           dataInicio: dataInicio,
-                                                           dataFim: dataFim,
-                                                           idEvento: idEvento,
-                                                           tipoEvento: tipoEvento,
-                                                           descricao: descricao);
-                    return manutencao;
+                    return CreateManutencao(arrData);
                 }
             }
             return null;
+        }
+
+        public static IApontamento CreateProducao(string[] arrData)
+        {
+            int idApontamento = Convert.ToInt32(arrData[0]);
+            DateTime dataInicio = Convert.ToDateTime(arrData[1]);
+            DateTime dataFim = Convert.ToDateTime(arrData[2]);
+            string numeroLote = arrData[3];
+            int idEvento = Convert.ToInt32(arrData[4]);
+            TipoEvento tipoEvento = TipoEvento.Producao;
+            string descricao = "Produção";
+            int quantidade = Convert.ToInt32(arrData[5]);
+
+            IApontamento producao = new Producao(idApontamento: idApontamento,
+                                             dataInicio: dataInicio,
+                                             dataFim: dataFim,
+                                             idEvento: idEvento,
+                                             tipoEvento: tipoEvento,
+                                             descricao: descricao,
+                                             numeroLote: numeroLote,
+                                             quantidade: quantidade);
+            return producao;
+        }
+
+        public static IApontamento CreateManutencao(string[] arrData)
+        {
+            int idApontamento = Convert.ToInt32(arrData[0]);
+            DateTime dataInicio = Convert.ToDateTime(arrData[1]);
+            DateTime dataFim = dataFim = Convert.ToDateTime(arrData[2]);
+            int idEvento = Convert.ToInt32(arrData[4]);
+            TipoEvento tipoEvento = TipoEvento.Manutencao;
+            string descricao = "Manutenção";
+
+            IApontamento manutencao = new Manutencao(idApontamento: idApontamento,
+                                                   dataInicio: dataInicio,
+                                                   dataFim: dataFim,
+                                                   idEvento: idEvento,
+                                                   tipoEvento: tipoEvento,
+                                                   descricao: descricao);
+            return manutencao;
         }
     }
 }

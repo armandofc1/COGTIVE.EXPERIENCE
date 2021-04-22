@@ -13,6 +13,11 @@ namespace COGTIVE.Repository
             this._list = new List<IApontamento>();
         }
 
+        public ApontamentoRepository(IList<IApontamento> list)
+        {
+            this._list = list;
+        }
+
         public void Add(IApontamento dto)
         {
             this._list.Add(dto);

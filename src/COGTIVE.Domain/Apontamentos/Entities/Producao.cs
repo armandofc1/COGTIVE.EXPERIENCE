@@ -15,6 +15,8 @@ namespace COGTIVE.Domain.Apontamentos
             this.Evento = new Evento(idEvento: idEvento, tipo: tipoEvento, descricao: descricao);
             this.NumeroLote = numeroLote;
             this.Quantidade = quantidade;
+
+            this.DataInclusao = DateTime.Now;
         }
 
         public Producao(Evento evento, string numeroLote, int quantidade)
@@ -22,10 +24,13 @@ namespace COGTIVE.Domain.Apontamentos
             this.Evento = evento;
             this.NumeroLote = numeroLote;
             this.Quantidade = quantidade;
+
+            this.DataInclusao = DateTime.Now;
         }
 
         public Producao() {
             this.Evento = new Evento();
+            this.DataInclusao = DateTime.Now;
         }
     }
 }

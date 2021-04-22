@@ -2,7 +2,7 @@
 
 namespace COGTIVE.Domain.Apontamentos
 {
-    public abstract class Apontamento : IApontamento
+    public abstract class Apontamento : Base, IApontamento
     {
         public int? IdApontamento { get; set; }
         public Intervalo Intervalo { get; set; }

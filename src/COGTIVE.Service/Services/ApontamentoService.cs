@@ -9,17 +9,27 @@ using System.Text;
 
 namespace COGTIVE.Service
 {
-    public static class ApontamentoService
+    public class ApontamentoService : IApontamentoService
     {
         public static ApontamentoRepository _repository { get; set; }
 
-        public static void LoadApontamento()
+        public ApontamentoService()
+        {
+            this.LoadApontamento();
+        }
+
+        public ApontamentoService(ApontamentoRepository repository)
+        {
+            _repository = repository;
+        }
+
+        public void LoadApontamento()
         {
             try
             {
                 if (_repository == null)
                 {
-                    ApontamentoService._repository = Data.Load();
+                    _repository = Data.Load(new ApontamentoRepository());
                 }
             }
             catch (Exception ex)
@@ -28,11 +38,10 @@ namespace COGTIVE.Service
             }
         }
 
-        public static IList<Producao> GetAllProducao()
+        public IList<Producao> GetAllProducao()
         {
             try
             {
-                ApontamentoService.LoadApontamento();
                 return _repository.GetAllProducao();
             }
             catch (Exception ex)
@@ -41,11 +50,10 @@ namespace COGTIVE.Service
             }
         }
 
-        public static IList<Manutencao> GetAllManutencao()
+        public IList<Manutencao> GetAllManutencao()
         {
             try
             {
-                ApontamentoService.LoadApontamento();
                 return _repository.GetAllManutencao();
             }
             catch (Exception ex)
@@ -54,11 +62,10 @@ namespace COGTIVE.Service
             }
         }
 
-        public static IList<Apontamento> GetAllApontamentos()
+        public IList<Apontamento> GetAllApontamentos()
         {
             try
             {
-                ApontamentoService.LoadApontamento();
                 return _repository.GetAllApontamentos();
             }
             catch (Exception ex)
@@ -67,59 +74,101 @@ namespace COGTIVE.Service
             }
         }
 
-        public static GAPModel GetGAP()
+        private TimeSpan CalculetePeriodoTotalFromManutencao(IList<Manutencao> listManutecao)
+        {
+            TimeSpan periodoTotal = new TimeSpan();
+            if (listManutecao != null && listManutecao.Count > 0)
+            {
+                periodoTotal = CalculetePeriodoTotal(listManutecao.Select(mnt => mnt.Intervalo).ToList());
+            }
+            return periodoTotal;
+        }
+
+        private TimeSpan CalculetePeriodoTotalFromGAPs(IList<GAP> listGAPs)
+        {
+            TimeSpan periodoTotal = new TimeSpan();
+            if (listGAPs != null && listGAPs.Count > 0)
+            {
+                periodoTotal = CalculetePeriodoTotal(listGAPs.Select(gp => gp.Intervalo).ToList());
+            }
+            return periodoTotal;
+        }
+
+        private TimeSpan CalculetePeriodoTotal(List<Intervalo> intervalos)
+        {
+            TimeSpan periodoTotal = new TimeSpan();
+            if (intervalos != null && intervalos.Count > 0)
+            {
+                intervalos.ForEach(delegate (Intervalo itv)
+                {
+                    if (itv.Duracao() != null)
+                    {
+                        periodoTotal = periodoTotal.Add((TimeSpan)itv.Duracao());
+                    }
+                });
+            }
+            return periodoTotal;
+        }
+        private string GetPeriodoTotal(TimeSpan periodoTotal)
+        {
+            string sPeriodoTotal;
+
+            if (periodoTotal.Days > 0)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append(((periodoTotal.Days * 24) + periodoTotal.Hours).ToString());
+                sb.Append(":");
+                sb.Append(periodoTotal.Minutes.ToString());
+                sb.Append(":");
+                sb.Append(periodoTotal.Seconds.ToString());
+                sPeriodoTotal = sb.ToString();
+            }
+            else
+            {
+                sPeriodoTotal = periodoTotal.ToString("hh\\:mm\\:ss");
+            }
+
+            return sPeriodoTotal;
+        }
+
+        public IList<GAP> FindGAPs(IList<Apontamento> listApontamentos)
+        {
+            IList<GAP> listGAP = new List<GAP>();
+            if (listApontamentos != null && listApontamentos.Count > 0)
+            {
+                for (int i = 0; i < listApontamentos.Count; i++)
+                {
+                    DateTime dataInicio;
+                    DateTime dataFim;
+
+                    dataInicio = listApontamentos[i].Intervalo.DataFim.Value;
+                    if (!listApontamentos.ToList().Exists(a =>
+                                                         a.Intervalo.DataInicio.HasValue
+                                                         && (a.Intervalo.DataInicio.Equals(dataInicio)))
+                        && listApontamentos.Count > (i + 1))
+                    {
+                        dataFim = listApontamentos[i + 1].Intervalo.DataInicio.Value;
+                        if (dataFim > dataInicio)
+                        {
+                            GAP gap = new GAP(dataInicio: dataInicio, dataFim: dataFim);
+                            listGAP.Add(gap);
+                        }
+                    }
+                }
+            }
+            return listGAP;
+        }
+
+        public GAPModel GetGAPs()
         {
             try
             {
                 GAPModel gapModel = new GAPModel();
-                IList<Apontamento> listApontamentos = ApontamentoService.GetAllApontamentos().OrderBy(a => a.Intervalo.DataInicio.Value).ToList();
-                IList<GAP> listGAP = new List<GAP>();
-                string sPeriodoTotal = string.Empty;
-                TimeSpan periodoTotal = new TimeSpan();
-                if (listApontamentos != null && listApontamentos.Count > 0)
-                {
-                    for(int i = 0; i < listApontamentos.Count; i++)
-                    {
-                        DateTime dataInicio;
-                        DateTime dataFim;
-
-                        dataInicio = listApontamentos[i].Intervalo.DataFim.Value;
-                        if(!listApontamentos.ToList().Exists(a =>
-                                                            a.Intervalo.DataInicio.HasValue
-                                                            && (a.Intervalo.DataInicio.Equals(dataInicio)))
-                            && listApontamentos.Count > (i + 1))
-                        {
-                            dataFim = listApontamentos[i + 1].Intervalo.DataInicio.Value;
-                            if (dataFim > dataInicio) {
-                                GAP gap = new GAP(dataInicio: dataInicio, dataFim: dataFim);
-                                listGAP.Add(gap);
-
-                                if (gap.Intervalo.Duracao() != null)
-                                {
-                                    periodoTotal = periodoTotal.Add((TimeSpan)gap.Intervalo.Duracao());
-                                }
-                            }
-                        }
-                    }
-                }
-                gapModel.QuantidadeTotal = listGAP.Count;
-
-                if (periodoTotal.Days > 0)
-                {
-                    StringBuilder sb = new StringBuilder();
-                    sb.Append(((periodoTotal.Days * 24) + periodoTotal.Hours).ToString());
-                    sb.Append(":");
-                    sb.Append(periodoTotal.Minutes.ToString());
-                    sb.Append(":");
-                    sb.Append(periodoTotal.Seconds.ToString());
-                    sPeriodoTotal = sb.ToString();
-                }
-                else
-                {
-                    sPeriodoTotal = periodoTotal.ToString("hh\\:mm\\:ss");
-                }
-                gapModel.PeriodoTotal = sPeriodoTotal;
-
+                IList<Apontamento> listApontamentos = this.GetAllApontamentos().OrderBy(a => a.Intervalo.DataInicio.Value).ToList();
+                IList<GAP> listGAPs = FindGAPs(listApontamentos);
+                TimeSpan periodoTotal = CalculetePeriodoTotalFromGAPs(listGAPs);
+                gapModel.QuantidadeTotal = listGAPs.Count;
+                gapModel.PeriodoTotal = GetPeriodoTotal(periodoTotal);
                 return gapModel;
             }
             catch (Exception ex)
@@ -128,12 +177,12 @@ namespace COGTIVE.Service
             }
         }
 
-        public static ProducaoModel GetProducao()
+        public ProducaoModel GetProducao()
         {
             try
             {
                 ProducaoModel producao = new ProducaoModel();
-                IList<Producao> listProducao = ApontamentoService.GetAllProducao();
+                IList<Producao> listProducao = this.GetAllProducao();
                 if (listProducao != null && listProducao.Count > 0)
                 {
                     producao.QuantidadeTotal = listProducao.Sum(p => p.Quantidade);
@@ -154,40 +203,14 @@ namespace COGTIVE.Service
             }
         }
 
-        public static ManutencaoModel GetManutencao()
+        public ManutencaoModel GetManutencao()
         {
             try
             {
                 ManutencaoModel manutencao = new ManutencaoModel();
-                IList<Manutencao> listManutecao = ApontamentoService.GetAllManutencao();
-                if (listManutecao != null && listManutecao.Count > 0)
-                {
-                    string sPeriodoTotal = string.Empty;
-                    TimeSpan periodoTotal = new TimeSpan();
-                    listManutecao.ToList().ForEach(delegate (Manutencao mnt)
-                    {
-                        if (mnt.Intervalo.Duracao() != null) {
-                            periodoTotal = periodoTotal.Add((TimeSpan)mnt.Intervalo.Duracao());
-                        }
-                    });
-
-                    if(periodoTotal.Days > 0)
-                    {
-                        StringBuilder sb = new StringBuilder();
-                        sb.Append(((periodoTotal.Days * 24) + periodoTotal.Hours).ToString());
-                        sb.Append(":");
-                        sb.Append(periodoTotal.Minutes.ToString());
-                        sb.Append(":");
-                        sb.Append(periodoTotal.Seconds.ToString());
-                        sPeriodoTotal = sb.ToString();
-                    }
-                    else
-                    {
-                        sPeriodoTotal = periodoTotal.ToString("hh\\:mm\\:ss");
-                    }
-
-                    manutencao.PeriodoTotal = sPeriodoTotal;
-                }
+                IList<Manutencao> listManutecao = this.GetAllManutencao();
+                TimeSpan periodoTotal = CalculetePeriodoTotalFromManutencao(listManutecao);
+                manutencao.PeriodoTotal = GetPeriodoTotal(periodoTotal);
                 return manutencao;
             }
             catch (Exception ex)

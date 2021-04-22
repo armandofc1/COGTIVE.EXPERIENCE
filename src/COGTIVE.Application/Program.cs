@@ -12,9 +12,10 @@ namespace COGTIVE.Application
             Title("COGTIVEXPERIENCE");
             try
             {
-                Funcionalidade1();
-                Funcionalidade2();
-                Funcionalidade3();
+                IApontamentoService service = new ApontamentoService();
+                FeatureGAPs(service);
+                FeatureProducao(service);
+                FeatureManutecao(service);
             }
             catch (Exception ex)
             {
@@ -33,13 +34,13 @@ namespace COGTIVE.Application
             Console.Write(Environment.NewLine);
         }
 
-        private static void Funcionalidade1()
+        private static void FeatureGAPs(IApontamentoService service)
         {
             try
             {
                 Title("1. Funcionalidade Calcular GAPs");
 
-                GAPModel gap = ApontamentoService.GetGAP();
+                GAPModel gap = service.GetGAPs();
                 Console.WriteLine("Quantidade de GAPs: {0}", gap.QuantidadeTotal);
                 Console.WriteLine("Período Total: {0}", gap.PeriodoTotal);
             }
@@ -50,21 +51,21 @@ namespace COGTIVE.Application
             }
         }
 
-        private static void Funcionalidade2()
+        private static void FeatureProducao(IApontamentoService service)
         {
             try {
-                Title("2.Funcionalidade Calcular Quantidades Produzidas");
+                Title("2. Funcionalidade Calcular Quantidades Produzidas");
 
-                ProducaoModel producao = ApontamentoService.GetProducao();
+                ProducaoModel producao = service.GetProducao();
                 Console.WriteLine("Quantidade Total Produzida: {0}", producao.QuantidadeTotal);
 
                 if(producao.Top3Lotes != null && producao.Top3Lotes.Count > 0)
                 {
-                    int colocacao = 0;
+                    int place = 0;
                     foreach (Producao prod in producao.Top3Lotes)
                     {
-                        colocacao++;
-                        Console.WriteLine("{0}º Lote {1} produziu {2}", colocacao, prod.NumeroLote, prod.Quantidade);
+                        place++;
+                        Console.WriteLine("{0}º Lote {1} produziu {2}", place, prod.NumeroLote, prod.Quantidade);
                     }
                 }
             }
@@ -75,13 +76,13 @@ namespace COGTIVE.Application
             }
         }
 
-        private static void Funcionalidade3()
+        private static void FeatureManutecao(IApontamentoService service)
         {
             try
             {
                 Title("3. Funcionalidade Calcular Horas de Manutenção");
 
-                ManutencaoModel manutencao = ApontamentoService.GetManutencao();
+                ManutencaoModel manutencao = service.GetManutencao();
                 Console.WriteLine("Período Total De Manutenção: {0}", manutencao.PeriodoTotal);
             }
             catch (Exception ex)

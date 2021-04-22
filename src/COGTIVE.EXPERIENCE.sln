@@ -1,0 +1,65 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31129.286
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "COGTIVE.Domain", "COGTIVE.Domain\COGTIVE.Domain.csproj", "{6FF3BFCB-B00F-4756-A796-D109958200BB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{ED175537-F4E8-4947-9627-022F1C58D30C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{10AA891F-5AE5-446F-BEDA-D488CA8EA00D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "COGTIVE.Repository", "COGTIVE.Repository\COGTIVE.Repository.csproj", "{0684C45E-3C7F-4B4D-B040-2C9301A7CCA9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "COGTIVE.Crosscutting", "COGTIVE.Crosscutting\COGTIVE.Crosscutting.csproj", "{30DF34CF-9C7F-4AF8-B5B1-78406083D357}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "COGTIVE.Application", "COGTIVE.Application\COGTIVE.Application.csproj", "{759A8053-F5F7-4BBB-A303-4299E5502717}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "data", "data", "{BB5E2472-CBA6-422F-B47F-19EF684565B1}"
+	ProjectSection(SolutionItems) = preProject
+		..\data\data.csv = ..\data\data.csv
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "COGTIVE.Service", "COGTIVE.Service\COGTIVE.Service.csproj", "{43056A76-A13D-4DB4-9A0F-1B12CBE23EF7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6FF3BFCB-B00F-4756-A796-D109958200BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FF3BFCB-B00F-4756-A796-D109958200BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FF3BFCB-B00F-4756-A796-D109958200BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FF3BFCB-B00F-4756-A796-D109958200BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0684C45E-3C7F-4B4D-B040-2C9301A7CCA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0684C45E-3C7F-4B4D-B040-2C9301A7CCA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0684C45E-3C7F-4B4D-B040-2C9301A7CCA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0684C45E-3C7F-4B4D-B040-2C9301A7CCA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30DF34CF-9C7F-4AF8-B5B1-78406083D357}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30DF34CF-9C7F-4AF8-B5B1-78406083D357}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30DF34CF-9C7F-4AF8-B5B1-78406083D357}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30DF34CF-9C7F-4AF8-B5B1-78406083D357}.Release|Any CPU.Build.0 = Release|Any CPU
+		{759A8053-F5F7-4BBB-A303-4299E5502717}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{759A8053-F5F7-4BBB-A303-4299E5502717}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{759A8053-F5F7-4BBB-A303-4299E5502717}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{759A8053-F5F7-4BBB-A303-4299E5502717}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43056A76-A13D-4DB4-9A0F-1B12CBE23EF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43056A76-A13D-4DB4-9A0F-1B12CBE23EF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43056A76-A13D-4DB4-9A0F-1B12CBE23EF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43056A76-A13D-4DB4-9A0F-1B12CBE23EF7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6FF3BFCB-B00F-4756-A796-D109958200BB} = {ED175537-F4E8-4947-9627-022F1C58D30C}
+		{0684C45E-3C7F-4B4D-B040-2C9301A7CCA9} = {ED175537-F4E8-4947-9627-022F1C58D30C}
+		{30DF34CF-9C7F-4AF8-B5B1-78406083D357} = {ED175537-F4E8-4947-9627-022F1C58D30C}
+		{759A8053-F5F7-4BBB-A303-4299E5502717} = {ED175537-F4E8-4947-9627-022F1C58D30C}
+		{43056A76-A13D-4DB4-9A0F-1B12CBE23EF7} = {ED175537-F4E8-4947-9627-022F1C58D30C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D726B8BD-F116-435B-9876-0AFCC55EBECA}
+	EndGlobalSection
+EndGlobal

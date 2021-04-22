@@ -53,7 +53,7 @@ namespace COGTIVE.Application
         private static void Funcionalidade2()
         {
             try {
-                Title("2.Funcionalidade Calcular Quantidades Produzidas");
+                Title("2. Funcionalidade Calcular Quantidades Produzidas");
 
                 ProducaoModel producao = ApontamentoService.GetProducao();
                 Console.WriteLine("Quantidade Total Produzida: {0}", producao.QuantidadeTotal);

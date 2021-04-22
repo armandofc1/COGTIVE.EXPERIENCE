@@ -60,11 +60,11 @@ namespace COGTIVE.Application
 
                 if(producao.Top3Lotes != null && producao.Top3Lotes.Count > 0)
                 {
-                    int colocacao = 0;
+                    int place = 0;
                     foreach (Producao prod in producao.Top3Lotes)
                     {
-                        colocacao++;
-                        Console.WriteLine("{0}º Lote {1} produziu {2}", colocacao, prod.NumeroLote, prod.Quantidade);
+                        place++;
+                        Console.WriteLine("{0}º Lote {1} produziu {2}", place, prod.NumeroLote, prod.Quantidade);
                     }
                 }
             }

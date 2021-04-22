@@ -7,13 +7,9 @@ namespace COGTIVE.Application
 {
     public class Program
     {
-        private static string tracos = "-------------------------------------------------------------------";
-
         public static void Main(string[] args)
         {
-            Console.WriteLine("COGTIVEXPERIENCE");
-            Console.WriteLine(tracos);
-
+            Title("COGTIVEXPERIENCE");
             try
             {
                 Funcionalidade1();
@@ -24,20 +20,24 @@ namespace COGTIVE.Application
             {
                 Console.WriteLine("Ocorreu um erro!", ex.Message);
             }
+            Console.ReadLine();
+        }
+
+        private static void Title(string descricao)
+        {
+            string tracos = "-------------------------------------------------------------------";
 
             Console.Write(Environment.NewLine);
+            Console.WriteLine(descricao);
             Console.WriteLine(tracos);
-            Console.ReadLine();
+            Console.Write(Environment.NewLine);
         }
 
         private static void Funcionalidade1()
         {
             try
             {
-                Console.Write(Environment.NewLine);
-                Console.WriteLine("1. Funcionalidade Calcular GAPs");
-                Console.WriteLine(tracos);
-                Console.Write(Environment.NewLine);
+                Title("1. Funcionalidade Calcular GAPs");
 
                 GAPModel gap = ApontamentoService.GetGAP();
                 Console.WriteLine("Quantidade de GAPs: {0}", gap.QuantidadeTotal);
@@ -52,11 +52,8 @@ namespace COGTIVE.Application
 
         private static void Funcionalidade2()
         {
-            try { 
-                Console.Write(Environment.NewLine);
-                Console.WriteLine("2. Funcionalidade Calcular Quantidades Produzidas");
-                Console.WriteLine(tracos);
-                Console.Write(Environment.NewLine);
+            try {
+                Title("2.Funcionalidade Calcular Quantidades Produzidas");
 
                 ProducaoModel producao = ApontamentoService.GetProducao();
                 Console.WriteLine("Quantidade Total Produzida: {0}", producao.QuantidadeTotal);
@@ -82,10 +79,7 @@ namespace COGTIVE.Application
         {
             try
             {
-                Console.Write(Environment.NewLine);
-                Console.WriteLine("3. Funcionalidade Calcular Horas de Manutenção");
-                Console.WriteLine(tracos);
-                Console.Write(Environment.NewLine);
+                Title("3. Funcionalidade Calcular Horas de Manutenção");
 
                 ManutencaoModel manutencao = ApontamentoService.GetManutencao();
                 Console.WriteLine("Período Total De Manutenção: {0}", manutencao.PeriodoTotal);
